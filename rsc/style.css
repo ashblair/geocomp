@@ -1,0 +1,292 @@
+#ShellMenu {
+	background-color: lightgray;
+	color: forestgreen;
+}
+#MainContainer {
+	background-color: lightgoldenrodyellow;
+}
+#StatusBarContainer {
+	background-color: forestgreen;
+}
+#FileNew {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#File_Open {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#File_Save {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#File_Save_As {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#File_Quit {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#tools_test {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#tools_drawsmiley {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#drawnumber_1 {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#drawnumber_2 {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#drawnumber_3 {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#drawnumber_4 {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#drawnumber_5 {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#drawnumber_6 {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#drawnumber_7 {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#drawnumber_8 {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#drawnumber_9 {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#drawnumber_10 {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#drawnumber_11 {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#drawnumber_12 {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#tools_drawngon {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#tools_showpolygons {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#tools_clearpolygons {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#compgeo_segmentintersect {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#triangulation_ymonotone {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#triangulation_triangles {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#compgeo_clearsharededges {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#compgeo_showvoronoi {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#compgeo_animatevoronoi {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#compgeo_trapezoids {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#compgeo_enablemouse {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#help_about {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#LoadButton {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#StoreButton {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#RemoveButton {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#Static0 {
+	color: lightgray;
+	background-color: forestgreen;
+}
+#Static1 {
+	color: lightgray;
+	background-color: forestgreen;
+}
+#Static2 {
+	color: lightgray;
+	background-color: forestgreen;
+}
+#Static3 {
+	color: lightgray;
+	background-color: forestgreen;
+}
+#Static4 {
+	color: lightgray;
+	background-color: forestgreen;
+}
+#VertexList {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#Static5 {
+	color: lightgray;
+	background-color: forestgreen;
+}
+#Static6 {
+	color: lightgray;
+	background-color: forestgreen;
+}
+#Static7 {
+	color: lightgray;
+	background-color: forestgreen;
+}
+#Static8 {
+	color: lightgray;
+	background-color: forestgreen;
+}
+#MainSelectedNEdit {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#MainSelectedYEdit {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#MainSelectedXEdit {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#SelectedUpdateButton {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#SelectedDeleteButton {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#Static9 {
+	color: lightgray;
+	background-color: forestgreen;
+}
+#DataLoadButton {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#Static10 {
+	color: lightgray;
+	background-color: forestgreen;
+}
+#Static11 {
+	color: lightgray;
+	background-color: forestgreen;
+}
+#MainDataXEdit {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#MainDataYEdit {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#Static12 {
+	color: lightgray;
+	background-color: forestgreen;
+}
+#MainDataAngleEdit {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#DataInsertBeforeButton {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#DataInsertAfterButton {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#DataRotateButton {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#DataMoveButton {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#DisplayWindow {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#StatusBar {
+	color: forestgreen;
+	background-color: lightgray;
+}
+#SelectedClearButton {
+	color: forestgreen;
+	background-color: lightgray;
+}
+
+#LoadButton:hover,
+#StoreButton:hover,
+#RemoveButton:hover,
+#SelectedUpdateButton:hover,
+#SelectedDeleteButton:hover,
+#DataLoadButton:hover,
+#DataInsertBeforeButton:hover,
+#DataInsertAfterButton:hover,
+#DataRotateButton:hover,
+#DataMoveButton:hover,
+#SelectedClearButton:hover {
+	color: white;
+	background-color: black;
+}
+menu {
+	background-color: lightgray;
+	color: forestgreen;
+}
+
+combobox, combobox button, combobox entry, combobox menu {
+	background-color: lightgray;
+	color: forestgreen;
+	font-family: Arial Narrow;
+	font-weight: lighter;
+}
