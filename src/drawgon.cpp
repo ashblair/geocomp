@@ -606,7 +606,7 @@ void drawgon::draw_dotsandanimation(void)
     }
     //cout << "\n";
     // 4th, the attribution:
-    string txt = "emojis by freepik.com";
+    string txt = "emojis under design";
 
     Cairo::FontExtents f_e;
     Cairo::TextExtents t_e;
@@ -731,7 +731,7 @@ for (int i = 0; i < 10; ++i)
  */ 
 
     cr->reset_clip();
-    string txt = "emojis by freepik.com";
+    string txt = "emojis under design";
 
     Cairo::FontExtents f_e;
     Cairo::TextExtents t_e;
