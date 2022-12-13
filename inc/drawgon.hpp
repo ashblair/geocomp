@@ -22,14 +22,14 @@ public:
          * vFrame;      // here's the idea:  vFrame will hold in order [3*bsegCount+1 points][2*lsegCount points][sCount points]
                         // the first line segment points will be the directrix, the others will be Voronoi edges
                         // the sCount will be site points above or on the directrix in added order
-    std::vector<int> V_BMP_IDX;  // a lookup index for each Voronoi vertex point to match with area of emoji.png
+    //std::vector<int> V_BMP_IDX;  // a lookup index for each Voronoi vertex point to match with area of emoji.png
     const Cairo::RefPtr< ::Cairo::Context> * pCR;
     Gtk::Allocation work_area;
     CompGeo::XY ctr;
     static const Cairo::RefPtr<Cairo::SolidPattern> cvClr[]; //these patterns correspond to colors as in drawColorIndex above
-    Cairo::RefPtr<Cairo::ImageSurface> image;   // holds emoji.png
-    Cairo::ImageSurface::SlotReadFunc my_slot;
-    unsigned char * RdPos;
+    //Cairo::RefPtr<Cairo::ImageSurface> image;   // holds emoji.png
+    //Cairo::ImageSurface::SlotReadFunc my_slot;
+    //unsigned char * RdPos;
     //sigc::nil vBuff;
     //Cairo::Surface::SlotDestroy dummy;
     //sigc::slot<void, sigc::nil, sigc::nil, sigc::nil, sigc::nil, sigc::nil, sigc::nil, sigc::nil> my_slot;
@@ -42,7 +42,7 @@ public:
     void draw_dotsandpolygon(void);
     void draw_dotsandanimation(void);
     void clrscr(void);
-    void experimental(void);
-    Cairo::ErrorStatus my_read_func(unsigned char*, unsigned int);
+    //void experimental(void);
+    //Cairo::ErrorStatus my_read_func(unsigned char*, unsigned int);
     //void on_destroy(void);
 };

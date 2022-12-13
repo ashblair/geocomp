@@ -5,8 +5,8 @@
 
 using namespace std;
 
-extern unsigned char emoji_start    asm("_binary_rsc_emoji_png_start");
-extern unsigned char emoji_end      asm("_binary_rsc_emoji_png_end");
+//extern unsigned char emoji_start    asm("_binary_rsc_emoji_png_start");
+//extern unsigned char emoji_end      asm("_binary_rsc_emoji_png_end");
 //extern unsigned char _binary_emoji_png_start, _binary_emoji_png_end;
 
 const Cairo::RefPtr<Cairo::SolidPattern> drawgon::cvClr[] ={
@@ -43,26 +43,11 @@ drawgon::drawgon(void)
     pCR = NULL;
     work_area = Gtk::Allocation(0, 0, 0, 0);
     ctr = CompGeo::XY(0.0, 0.0);
-    //image = Cairo::ImageSurface::create_from_png("resources/emoji.png");
     
-    unsigned char * i_s = &emoji_start; //, * i_e = &_binary_emoji_png_end;
-    //unsigned int i_z = i_e - i_s;
-    //unsigned char * cBuff = (unsigned char *) new unsigned char[i_z];
-    RdPos = i_s;
-    
-
-    //my_slot = sigc::bind(sigc::mem_fun(*this, &drawgon::my_read_func), cBuff, i_z);
-    my_slot = sigc::mem_fun<unsigned char*, unsigned int, Cairo::ErrorStatus>(*this, &drawgon::my_read_func);
-    image = Cairo::ImageSurface::create_from_png_stream(my_slot);
-    //image->create_from_png_stream(my_slot);
-    //delete [] cBuff;
-    //my_slot = sigc::mem_fun(*this, &drawgon::on_destroy);
-    //string mimeType = "CAIRO_MIME_TYPE_PNG";
-    //image->set_mime_data(mimeType, i_s, i_z, my_slot);
-    
-    //image->create_from_png("resources/emoji.png");
-    //image->create_from_png_stream()
-    //cout << "constructing drawgon \n";
+    //unsigned char * i_s = &emoji_start; //, * i_e = &_binary_emoji_png_end;
+    //RdPos = i_s;
+    //my_slot = sigc::mem_fun<unsigned char*, unsigned int, Cairo::ErrorStatus>(*this, &drawgon::my_read_func);
+    //image = Cairo::ImageSurface::create_from_png_stream(my_slot);
 
 }
 
@@ -76,6 +61,7 @@ void drawgon::on_destroy(void)
 
 }
 */
+/*
 Cairo::ErrorStatus drawgon::my_read_func(unsigned char* data, unsigned int length)
 {
     unsigned char * i_e = &emoji_end;
@@ -85,7 +71,7 @@ Cairo::ErrorStatus drawgon::my_read_func(unsigned char* data, unsigned int lengt
     RdPos += rmng;
     return CAIRO_STATUS_SUCCESS;
 } 
-
+*/
 void drawgon::switchboard(const Cairo::RefPtr< ::Cairo::Context> & cr)
 {
     if ((drawCtrlIdx == 0) || (drawCtrlIdx > 8)) return;
@@ -118,7 +104,7 @@ void drawgon::switchboard(const Cairo::RefPtr< ::Cairo::Context> & cr)
         clrscr();
         break;
     case 8:
-        experimental();
+        //experimental();
         break;
     }
 
@@ -556,6 +542,7 @@ void drawgon::draw_dotsandanimation(void)
         cr->set_source(cvClr[0]);   // black
         cr->stroke();
     }
+    /*
     // 3rd, the site points:
     // get ready to use image with emojis
         //cr->translate(-cx, -cy);  // un-translate
@@ -581,6 +568,7 @@ void drawgon::draw_dotsandanimation(void)
     int biCount = V_BMP_IDX.size(), sDelta = sCount - biCount;
     assert (sCount >= biCount);
     //cout << " sCount:" << to_string(sCount) << "\n";
+    cr->set_source(cvClr[drawColorIndex]);
     for (int i = 0; i < sCount; ++i)
     {
         readIdx = (i >= sDelta);
@@ -596,21 +584,27 @@ void drawgon::draw_dotsandanimation(void)
         xyM.x /= s_f;
         xyM.y /= s_f;
         CompGeo::XY xyS(xyM.x + CX - eWidth / 2, CY - xyM.y - eHeight / 2); // point on screen
+
+        //cr->arc(xyS.x, -xyS.y, 3.0, 0.0, 2.0 * M_PI);
+        //cr->fill();
+            //cr->fill();
+
         //cout << to_string(i) + (readIdx? "+":"-") + "(" << to_string(xyM.x) << "," << to_string(xyM.y) << ") (" << to_string(xyS.x) << "," << to_string(xyS.y) << ") ";
-        cr->set_source(image, xyS.x - (sx + rx * dx), xyS.y - (sy + ry * dy));
-        cr->rectangle(xyS.x, xyS.y, eWidth, eHeight);
-        cr->clip();
-        cr->paint ();
-        cr->reset_clip();
+        //cr->set_source(image, xyS.x - (sx + rx * dx), xyS.y - (sy + ry * dy));
+        //cr->rectangle(xyS.x, xyS.y, eWidth, eHeight);
+        //cr->clip();
+        //cr->paint ();
+        //cr->reset_clip();
         //if (!readIdx) V_BMP_IDX.push_back(r);
     }
+    */
     //cout << "\n";
     // 4th, the attribution:
-    string txt = "emojis under design";
+    string txt = "the waves roll in";
 
     Cairo::FontExtents f_e;
     Cairo::TextExtents t_e;
-    cr->scale(1.0 / s_f, 1.0 / s_f);    // reverse scale
+    //cr->scale(1.0 / s_f, 1.0 / s_f);    // reverse scale
     int textcolor = 7;  // dark-pink
     cr->set_source(cvClr[textcolor]);
     cr->set_font_size(width / 80.0);
@@ -626,7 +620,7 @@ void drawgon::draw_dotsandanimation(void)
    drawColorIndex = 0;  // back to black
     
 }
-
+/*
 void drawgon::experimental(void)
 {
     const Cairo::RefPtr<Cairo::Context>& cr = *pCR;
@@ -646,7 +640,7 @@ int              w, h;
 //cairo_surface_t *image;
 
 //cr->begin_new_path();
-//cr->new_path (); /* path not consumed by clip()*/
+//cr->new_path ();  path not consumed by clip()
 
 
 //Glib::RefPtr<Gdk::Pixbuf> image = Gdk::Pixbuf::create_from_file("resources/emoji.png");
@@ -711,27 +705,27 @@ for (int i = 0; i < 10; ++i)
     emojiIdx = rand() % (nx * ny);
 
 }
-/*
 
-    int sx = 78, sy = 364, eWidth = 156, eHeight = 182, dy = 235, dx = 193, 
-        nx = 8, ny = 5,
-        r = emojiIdx, ry = r / nx, rx = r - nx * ry,
-        deltax = cx - eWidth / 2 - (sx + rx * dx), 
-        deltay = cy - eHeight / 2 - (sy + ry * dy);
+
+    //int sx = 78, sy = 364, eWidth = 156, eHeight = 182, dy = 235, dx = 193, 
+    //    nx = 8, ny = 5,
+    //    r = emojiIdx, ry = r / nx, rx = r - nx * ry,
+    //    deltax = cx - eWidth / 2 - (sx + rx * dx), 
+    //    deltay = cy - eHeight / 2 - (sy + ry * dy);
 
     
     //Gdk::Cairo::set_source_pixbuf(cr, image);
-    cr->set_source(image, deltax, deltay);
-    cr->rectangle(sx + rx * dx, sy + ry * dy, eWidth, eHeight);
-    cr->clip();
+    //cr->set_source(image, deltax, deltay);
+    //cr->rectangle(sx + rx * dx, sy + ry * dy, eWidth, eHeight);
+    //cr->clip();
 
-    cr->paint();
+    //cr->paint();
+
+    //cr->reset_clip();
+  
 
     cr->reset_clip();
- */ 
-
-    cr->reset_clip();
-    string txt = "emojis under design";
+    string txt = "waves on the beach";
 
     Cairo::FontExtents f_e;
     Cairo::TextExtents t_e;
@@ -769,5 +763,6 @@ for (int i = 0; i < 10; ++i)
 	cr->show_text(txt);
 
 }
+*/
 
 

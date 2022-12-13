@@ -1354,7 +1354,7 @@ void ControlInterface::HandleVoronoiAnimationStart(void)
 	//double width = dArea.right - dArea.left, height = dArea.bottom - dArea.top;
 	//V_noi.SetBoundingBox(-width / 2.0, -height / 2.0, width / 2.0, height / 2.0);
 	V_noi.InProcess = false;
-	ppd->V_BMP_IDX.clear();
+	//ppd->V_BMP_IDX.clear();
 	V_noi.StartAnimation(animation_delta); //, animation_timer_id, animation_Interval, animation_delta);
 	mouseState = 2;
 	if (timerOn) 
