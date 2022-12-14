@@ -472,7 +472,94 @@ namespace CompGeo
 			for (std::vector<pHalfEdgeListType>::iterator lit = lCld.begin(); lit < lCld.end(); ++lit) (*lit)->PrintHalfEdgeList();
 
 		}
+		pFaceType BuildFrame(const pFaceType &pf)
+		{ // pf is the exterior face with no outer and inner w/ all the model's faces
+			assert (pf->inner != 0);
+			pFaceType pfOUT = new FaceType;
+			ITYPE inFace = pf->face, outFace = push(pfOUT);
+			pfOUT->face = outFace;
+			// 1) get all halfs incidental to face pf:
+				std::vector<std::vector<pHalfEdgeType>> INNERS = all_inner(pf);
+				std::vector<pHalfEdgeType> INCIDENTALS; 
+				for (std::vector<std::vector<pHalfEdgeType>>::iterator heit = INNERS.begin(); heit != INNERS.end(); ++heit)
+				{
+					std::vector<pHalfEdgeType> PERIM = *heit;
+					for (std::vector<pHalfEdgeType>::iterator hit = PERIM.begin(); hit != PERIM.end(); ++hit)
+					{
+						pHalfEdgeType h = *hit;
+						if (h->incidentface == inFace) INCIDENTALS.push_back(h);
+					}
+				}
+				
+			// 2) get min and max points:
+				BasicTPoint<T> pO = origin(INCIDENTALS[0])->xyz, pN = pO, pMAX = pO, pMIN = pO;
+				for (std::vector<pHalfEdgeType>::iterator hit = INCIDENTALS.begin(); hit != INCIDENTALS.end(); ++hit)
+				{
+					pO = origin(*hit)->xyz;
+					pN = origin(next(*hit))->xyz;
+					for (unsigned char i = 0; i < 2; ++i)
+					{
+						if (pO.dim(i) > pMAX.dim(i)) pMAX.dim(i) = pO.dim(i);
+						if (pO.dim(i) < pMIN.dim(i)) pMIN.dim(i) = pO.dim(i);
+						if (pN.dim(i) > pMAX.dim(i)) pMAX.dim(i) = pN.dim(i);
+						if (pN.dim(i) < pMIN.dim(i)) pMIN.dim(i) = pN.dim(i);
+					}
+				}
+			// 3) add rectangle points in order LR, UR, UL, LL:
+				pMAX.X += static_cast<T>(2);
+				pMAX.Y += static_cast<T>(2);
+				pMIN.X -= static_cast<T>(2);
+				pMIN.Y -= static_cast<T>(2);
+				pTPoint<T> CRNS[] = {new TPoint(BasicTPoint<T>(pMAX.X, pMIN.Y, static_cast<T>(0))), 
+									 new TPoint(BasicTPoint<T>(pMAX.X, pMAX.Y, static_cast<T>(0))),
+									 new TPoint(BasicTPoint<T>(pMIN.X, pMAX.Y, static_cast<T>(0))),
+									 new TPoint(BasicTPoint<T>(pMIN.X, pMIN.Y, static_cast<T>(0)))};
+				ITYPE iCRNS[4];
+				for (size_t i = 0; i < 4; ++i)
+				{
+					iCRNS[i] = push(CRNS[i]);
+					CRNS[i]->vertex = iCRNS[i];
+					// to do: incidentedge
+				}
+			// 4) add halfs [LR, UR, UL, LL][inner counterclockwise, outer clockwise]:
+				pHalfEdgeType RECT[][2] = {{new HalfEdgeType, new HalfEdgeType}, 
+										  {new HalfEdgeType, new HalfEdgeType}, 
+										  {new HalfEdgeType, new HalfEdgeType}, 
+										  {new HalfEdgeType, new HalfEdgeType}};
+				ITYPE iRECT[4][2];
+				for (size_t i = 0; i < 4; ++i)
+				{
+					for (size_t j = 0; j < 2; ++j)
+					{
+						iRECT[i][j] = push(RECT[i][j]);
+						RECT[i][j]->halfedge = iRECT[i][j];
+						RECT[i][j]->origin = iCRNS[i];
+					}
+					CRNS[i]->incidentedge = iRECT[i][0];
+				}
+				for (size_t i = 0; i < 4; ++i)
+				{ // next, prev, twin
+					size_t n = (i + 1) % 4, p = (i + 3) % 4;
+					RECT[i][0]->incidentface = inFace;
+					RECT[i][0]->next = iRECT[n][0];
+					RECT[i][0]->prev = iRECT[p][0];
+					RECT[i][0]->twin = iRECT[n][1];
+					RECT[i][1]->incidentface = outFace;
+					RECT[i][1]->next = iRECT[p][1];
+					RECT[i][1]->prev = iRECT[n][1];
+					RECT[i][1]->twin = iRECT[p][0];
+				}
+			// 5) root the lists appropriately:
+				pHalfEdgeListType pHEL = new HalfEdgeListType;
+				pHEL->helsttop = iRECT[1][1];
+				ITYPE iHEL = push(pHEL);
+				pHEL->halfedgelist = iHEL;
+				pfOUT->inner = iHEL;
+				pf->outer = iRECT[0][0];
 
+			return pfOUT;
+		}
+		/*
 		char HalfEdgeCmp(const pHalfEdgeType & h1, const pHalfEdgeType & h2)
 		{
 			BasicTPoint<T> o1 = origin(h1)->xyz, o2 = origin(h2)->xyz, delta = o2 - o1;
@@ -576,7 +663,7 @@ namespace CompGeo
 			} while (o[0] != oT);
 			return cf;
 		}
-
+		*/
 	private:
 		ITYPE fIdx, pIdx, hIdx, lIdx;
 		std::vector<pFaceType> fCld; 				// faces

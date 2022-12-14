@@ -4083,9 +4083,9 @@ void Fortune::Voronoi::translateDiagram(CompGeo::DCEL<double> & dPlus)
 	}
 	// now, the containing rectangle:
 	pf = dPlus.getFace(topFace);
-	CompGeo::pHalfEdgeType hm = NULL;
-	dPlus.getMaxHalfEdge(pf, hm);
-	pf = dPlus.BuildFrame(hm, pf);
+	//CompGeo::pHalfEdgeType hm = NULL;
+	//dPlus.getMaxHalfEdge(pf, hm);
+	pf = dPlus.BuildFrame(pf);
 	pCellType cBuff = new CellType;
 	pf->additionalFaceInfo = cBuff;
 	cBuff->site = NULL; cBuff->OuterComponent = NULL; cBuff->InnerComponents = NULL;
