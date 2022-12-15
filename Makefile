@@ -157,14 +157,11 @@ $(BLD)/$(RSC)/%.o: $(RSC)/%
 
 $(BLD)/$(SRC)/%.o: $(SRC)/%
 	@$(CXX) $(CXX_FLAGS) -I$(INC) $(CFLAGS) -c $< -o $@
-	@echo new object file compiled [$@] >> $(LOGFILE)
+	@echo new object file compiled [$@] due to [$?] >> $(LOGFILE)
 
 $(BLD)/$(SRC)/%.d: $(SRC)/%
-	@$(CXX) $(CXX_FLAGS) -I$(INC) -MM $< -MF $@
-	@STEM=$(subst .cpp,,$*) ; \
-	sed -i "s,$${STEM}.o,$(BLD)/$(SRC)/$${STEM}.cpp.o $@," $@ ; \
-	sed -i "s,$< ,," $@ ;
-	@echo new depend file compiled [$@] >> $(DEPFILE)
+	@$(CXX) -I$(INC) $< -MM -MT '$@ $(subst .d,.o,$@)' -MF $@
+	@echo new depend file compiled [$@] due to [$?] >> $(DEPFILE)
 
 .PHONY: logsetup
 logsetup:
