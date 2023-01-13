@@ -55,7 +55,6 @@ EXE := $(notdir $(CWD))$(EXE_SFX)
 ICONFILE := $(CWD)/share/icons/small.ico
 USETERMINAL := false
 LOGFILE := $(CWD)/log.txt
-DEPFILE := $(CWD)/dep.txt
 DIRFILE := $(CWD)/dir.txt
 
 #updating base directory structure:
@@ -93,10 +92,11 @@ allinBLD := $(shell find $(BLD) -type f)
 allinRSC := $(shell find $(RSC) -type f)
 allinSRC := $(shell find $(SRC) -type f)
 SRCS :=  $(filter %.cpp, $(allinSRC))
-DEPS := $(addprefix $(BLD)/, $(addsuffix .d, $(SRCS)))
+DEPS := $(filter %.d, $(allinBLD))
+DEL_BLD := $(filter-out $(DEPS:%.d=%.o), $(filter $(BLD)/$(SRC)/%.o, $(allinBLD)))
 OBJS := $(addprefix $(BLD)/, $(addsuffix .o, $(SRCS)))
 OBJS += $(addprefix $(BLD)/, $(addsuffix .o, $(allinRSC)))
-DEL_BLD := $(filter-out $(BLD)/$(EXE), $(filter-out $(DEPS), $(filter-out $(OBJS), $(allinBLD))))
+DEL_BLD += $(filter-out $(BLD)/$(EXE), $(filter-out $(DEPS), $(filter-out $(OBJS), $(allinBLD))))
 RUN_DT := $(EXE).desktop
 RUN_SH := $(EXE).sh
 
@@ -156,12 +156,10 @@ $(BLD)/$(RSC)/%.o: $(RSC)/%
 	@echo resource $< made into object $@ >> $(LOGFILE) ;
 
 $(BLD)/$(SRC)/%.o: $(SRC)/%
+	@$(CXX) -I$(INC) $< -MM -MT '$@' -MF $(subst .o,.d,$@)
+	@sed -i 's/$(SRC)\/$* //g' $(subst .o,.d,$@)
 	@$(CXX) $(CXX_FLAGS) -I$(INC) $(CFLAGS) -c $< -o $@
-	@echo new object file compiled [$@] due to [$?] >> $(LOGFILE)
-
-$(BLD)/$(SRC)/%.d: $(SRC)/%
-	@$(CXX) -I$(INC) $< -MM -MT '$@ $(subst .d,.o,$@)' -MF $@
-	@echo new depend file compiled [$@] due to [$?] >> $(DEPFILE)
+	@echo new object + depend file compiled [$@ + .d] due to [$?] >> $(LOGFILE)
 
 .PHONY: logsetup
 logsetup:
@@ -193,10 +191,6 @@ logsetup:
 	@echo [allinRSC=$(allinRSC)] >> $(LOGFILE)
 	@echo [allinSRC=$(allinSRC)] >> $(LOGFILE)
 	@echo [OBJS=$(OBJS)] >> $(LOGFILE)
-	@if [ -f $(DEPFILE) ]; then \
-	echo -------\>MADE DEPENDS FILES WHEN INCLUDING: >> $(LOGFILE) ; \
-	cat $(DEPFILE) >> $(LOGFILE) ; \
-	$(RM) $(DEPFILE) ; fi ; 
 	@echo -----\>MAKE OUTPUT FOLLOWS: >> $(LOGFILE)
 
 .PHONY: logclear
