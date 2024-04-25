@@ -1,4 +1,5 @@
 #pragma once
+#include "AVL.hpp"
 
 namespace Fortune
 {
@@ -303,8 +304,8 @@ namespace Fortune
 		pArcType FindArc(pCellType); // sets path_first to root and 
 		//void SetCirclePath(pBeachPointType); // sets path for a circle event
 		void FindLeaf(pArcType);
-		void AddArc(pArcType &, CompGeo::AVL<EventQPoint> &); // call with new site/cell/arc
-		void DeleteArc(pEventQPoint, CompGeo::AVL<EventQPoint> &, pDiagramType); // call with circle point
+		void AddArc(pArcType &, AVL<EventQPoint> &); // call with new site/cell/arc
+		void DeleteArc(pEventQPoint, AVL<EventQPoint> &, pDiagramType); // call with circle point
 		void ClearPath(void);
 		void AddToPath(pNodeType, char);
 		void RemoveFromPath(pPathType);
@@ -326,7 +327,7 @@ namespace Fortune
 		void AddFirstArc(pArcType &);
 		void AddFirstPoint(pArcType &);
 		void AddTopLevelArc(pArcType &);
-		void AddNormal(pArcType &, CompGeo::AVL<EventQPoint> &); // Q needed to add or delete circle events
+		void AddNormal(pArcType &, AVL<EventQPoint> &); // Q needed to add or delete circle events
 		void SetNode(pNodePointerType &, pNodeType, pBeachPointType);
 	};
 
@@ -396,7 +397,7 @@ namespace Fortune
 		void DiagramHalfEdges(void);
 		void DebugPrintHalfEdgeCycle(CompGeo::DCEL<double> &, CompGeo::pHalfEdgeType);
 		BinaryBPlus T;
-		CompGeo::AVL<EventQPoint> Q;
+		AVL<EventQPoint> Q;
 		pSitePointListType SitePoints;
 		//pVertexListType BBvtx_i, BBvtx_f; // all vertices on the bounding box
 		//int ocount, hcount;

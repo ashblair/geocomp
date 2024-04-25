@@ -1,5 +1,6 @@
 #include "first.hpp"
 #include "CompGeo.hpp"
+#include "AVL.hpp"
 #include "FaceX.hpp"
 
 using namespace std;
@@ -1443,7 +1444,7 @@ template <typename T> void FaceX::faceX<T>::getEdges(void)
     E_CMP.xOnSweep = eventPt->GetX();
     SType<T> st = SType<T>(&E_CMP);
 
-    CompGeo::AVLNode<SType<T>> * p = S.Find(&st);
+    AVLNode<SType<T>> * p = S.Find(&st);
     while (p != NULL)
     {
         
@@ -1452,20 +1453,22 @@ template <typename T> void FaceX::faceX<T>::getEdges(void)
         p = S.Find(&st);
     }
     sort(A.s_q.intersectors.begin(), A.s_q.intersectors.end());
-    if (S.pathTop > 0)
+    BYTE pSz = S.sPath.size();
+    if (pSz > 0)
     {
-        char d = S.sPath[S.pathTop].direction;
-        unsigned int i;
-        for (i = S.pathTop - 1; i > 0; --i) if (S.sPath[i].direction != d) break;
+        BYTE pathTop = pSz - 1;
+        char d = S.sPath[pathTop].direction;
+        BYTE i;
+        for (i = pathTop; i > 0; --i) if (S.sPath[i - 1].direction != d) break;
         if (d == 'r')
         {
-            A.s_q.left_N = S.sPath[S.pathTop].pNode->Data->edge;
-            if (i > 0) A.s_q.right_N = S.sPath[i].pNode->Data->edge;
+            A.s_q.left_N = S.sPath[pathTop].node->Data->edge;
+            if (i > 0) A.s_q.right_N = S.sPath[i - 1].node->Data->edge;
         }
         else // d == 'l'
         {
-            A.s_q.right_N = S.sPath[S.pathTop].pNode->Data->edge;
-            if (i > 0) A.s_q.left_N = S.sPath[i].pNode->Data->edge;
+            A.s_q.right_N = S.sPath[pathTop].node->Data->edge;
+            if (i > 0) A.s_q.left_N = S.sPath[i - 1].node->Data->edge;
         }
     }
     
@@ -1802,8 +1805,8 @@ template<typename T> FaceX::pPtLnk<T> FaceX::faceX<T>::handlePoint(CompGeo::TPoi
     if (Pt == NULL) Pt = new Point<T>;
     Pt->AddLink(L);
     Qt = new QType<T>(Pt);
-    CompGeo::AVLPath<QType<T>> * avlpth = &(Q.sPath[Q.pathTop]);
-    avlpth->pNode->Data = Qt;
+    AVLPathElement<QType<T>> * avlpth = &(Q.sPath[Q.sPath.size() - 1]);
+    avlpth->node->Data = Qt;
 
     return L;
 }

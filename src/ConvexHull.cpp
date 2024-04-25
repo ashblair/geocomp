@@ -1,5 +1,6 @@
 #include "first.hpp"
 #include "CompGeo.hpp"
+#include "Sorter.hpp"
 #include "NGons.hpp"
 #include "ConvexHull.hpp"
 
@@ -71,7 +72,7 @@ ConvexHull::ConvexHull(vector<pPGonWork> *& gLst)
 	}
 	// setting the next static flag enables a specific type of order on the XY type:
 	//CompGeo::typeCompGeo::CGT = CompGeo::typeCompGeo::CONVEX_HULL;
-	CompGeo::Sorter<ConvexHullXY> s(vertices, 0, numVerts - 1, numVerts);
+	Sorter<ConvexHullXY> s(vertices, 0, numVerts - 1, numVerts);
 	s.doSort();
 	//CompGeo::typeCompGeo::CGT = CompGeo::typeCompGeo::NO_SELECTION;
 }

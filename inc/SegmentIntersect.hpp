@@ -1,4 +1,5 @@
 #pragma once
+#include "AVL.hpp"
 
 	class SegIntXY:public CompGeo::XY
 	{
@@ -120,7 +121,7 @@
 		void getAllIntersects(void);
 		pPGonWork makePolygon(unsigned int &);
 		std::vector<pPGonWork> makePolygons(unsigned int &);
-		pIndexListType getContainerEdges(CompGeo::AVL<SegIntEdge> &, unsigned int *&, unsigned int *&);
+		pIndexListType getContainerEdges(AVL<SegIntEdge> &, unsigned int *&, unsigned int *&);
 
 		// a couple of important members:
 		static pSegIntVertexElementType SegIntVertices;

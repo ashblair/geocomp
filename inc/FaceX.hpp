@@ -348,8 +348,8 @@ namespace FaceX // for face intersection algorithms
         static CompGeo::DCEL<T> * dcel; // initialize before default constructing this
         static pPoint<T> eventPt;
         static CompGeo::ITYPE sweep_iteration, ptIdx, heIdx; // all new halfedges will be @ or above heIdx in dcel
-        CompGeo::AVL<QType<T>> Q;
-        CompGeo::AVL<SType<T>> S;
+        AVL<QType<T>> Q;
+        AVL<SType<T>> S;
         Edge<T> E_CMP;
         AnalysisType<T> A;
     };

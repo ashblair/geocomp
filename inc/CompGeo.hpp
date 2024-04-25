@@ -759,7 +759,7 @@ namespace CompGeo
 	double Rounding(double, unsigned int); // rounds double at unsigned int decimal place after
 	
 
-	template <class T>
+	/*template <class T>
 	class Sorter
 	{
 	public:
@@ -1435,7 +1435,7 @@ namespace CompGeo
 			//DWORD  dwBytesToWrite, dwBytesWritten, dwPos;
 			//char * buff = new char[w2 + 10];
 			
-			/*
+			//
 			HANDLE hf = CreateFile(fN, 
 						FILE_APPEND_DATA,         // open for writing
 						0,						  // do not share
@@ -1443,7 +1443,7 @@ namespace CompGeo
 						OPEN_ALWAYS,              // open or create
 						FILE_ATTRIBUTE_NORMAL,    // normal file
 						NULL);					  // no attr. template
-			*/
+			//
 			std::ofstream hf;
 			hf.open(fN);
 
@@ -1560,7 +1560,7 @@ namespace CompGeo
 	{
 	public:
 		BinaryBPlusNode(void): height(0), key(NULL), left(NULL), right(NULL) {}
-		/*
+		//
 		BinaryBPlusNode(const BinaryBPlusNode & a)
 		{
 			key = a.key;
@@ -1568,7 +1568,7 @@ namespace CompGeo
 			right = a.right;
 			height = a.height;
 		}
-		*/
+		//
 
 		int height;
 		BinaryBPlusLeaf<T> * key;
@@ -2008,7 +2008,7 @@ namespace CompGeo
 			PC->SetHeight(root);
 		}
 
-		/*
+		//
 		void InsertAlways(T *& DataIn)
 		{ // tree could have duplicate leafs
 			BinaryBPlusLeaf<T> * LF = FindLeaf(DataIn, true), *LF_N = NULL, *LF_P = NULL;
@@ -2057,7 +2057,7 @@ namespace CompGeo
 			PC->SetHeight(root);
 
 		}
-		*/
+		//
 
 	//private:
 		int _DeleteLeaf(BinaryBPlusLeaf<T> *& LF)
@@ -2137,6 +2137,6 @@ namespace CompGeo
 		BinaryBPlusNode<T> * root;
 		BinaryBPlusPathContainer<T> * PC;
 		int leaf_count;
-	};
+	};*/
 };
 

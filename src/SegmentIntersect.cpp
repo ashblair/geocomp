@@ -547,14 +547,14 @@ void SegmentIntersect::addtoReport(SegIntPoint *& rI)
 }
 
 
-pIndexListType SegmentIntersect::getContainerEdges(CompGeo::AVL<SegIntEdge> & t, unsigned int *& left_neighbor, 
+pIndexListType SegmentIntersect::getContainerEdges(AVL<SegIntEdge> & t, unsigned int *& left_neighbor, 
 	unsigned int *& right_neighbor)
 {
 	SegIntEdge siE;
 	pIndexListType edges = NULL, eTrail = NULL, ePtr = NULL;
 	left_neighbor = NULL;
 	right_neighbor = NULL;
-	CompGeo::AVLNode<SegIntEdge> * p = NULL;
+	AVLNode<SegIntEdge> * p = NULL;
 	bool foundSeg = false;
 	// loop until there are no more segments containing refPt
 	do
@@ -563,31 +563,33 @@ pIndexListType SegmentIntersect::getContainerEdges(CompGeo::AVL<SegIntEdge> & t,
 		p = t.Find(&siE);
 		if (p != NULL)
 		{
-				foundSeg = true;
-				ePtr = new IndexListType;
-				ePtr->next = NULL;
-				ePtr->index = p->Data->eIdx;
-				if (eTrail == NULL) edges = ePtr;
-				else eTrail->next = ePtr;
-				eTrail = ePtr;
-				t.Delete();
-			}
+			foundSeg = true;
+			ePtr = new IndexListType;
+			ePtr->next = NULL;
+			ePtr->index = p->Data->eIdx;
+			if (eTrail == NULL) edges = ePtr;
+			else eTrail->next = ePtr;
+			eTrail = ePtr;
+			t.Delete();
+		}
 	} while (foundSeg);
 	// setting the neighbors:
-	if (t.pathTop > 0) // check for empty tree
+	BYTE pSz = t.sPath.size();
+	if (pSz > 0) // check for empty tree
 	{
-		char d = t.sPath[t.pathTop].direction;
-		unsigned int i;
-		for (i = t.pathTop - 1; i > 0; --i) if (t.sPath[i].direction != d) break;
+		BYTE pathTop = pSz - 1;
+		char d = t.sPath[pathTop].direction;
+		BYTE i;
+		for (i = pathTop; i > 0; --i) if (t.sPath[i - 1].direction != d) break;
 		if (d == 'r')
 		{
-			left_neighbor = &t.sPath[t.pathTop].pNode->Data->eIdx;
-			if (i > 0) right_neighbor = &t.sPath[i].pNode->Data->eIdx;
+			left_neighbor = &t.sPath[pathTop].node->Data->eIdx;
+			if (i > 0) right_neighbor = &t.sPath[i - 1].node->Data->eIdx;
 		}
 		else // d is 'l'
 		{
-			right_neighbor = &t.sPath[t.pathTop].pNode->Data->eIdx;
-			if (i > 0) left_neighbor = &t.sPath[i].pNode->Data->eIdx;
+			right_neighbor = &t.sPath[pathTop].node->Data->eIdx;
+			if (i > 0) left_neighbor = &t.sPath[i - 1].node->Data->eIdx;
 		}
 	}
 	return edges;
@@ -618,8 +620,8 @@ void SegmentIntersect::getAllIntersects(void)
 		delete rptI;
 		rptI = pSIPLT;
 	}
-	CompGeo::AVL<SegIntPoint> E_Q; // the event queue Q
-	CompGeo::AVL<SegIntEdge> S_T; // the status tree
+	AVL<SegIntPoint> E_Q; // the event queue Q
+	AVL<SegIntEdge> S_T; // the status tree
 	bool fInserted = true;
 	SegIntPoint * pIP = NULL, * pIPIns, segIP;
 

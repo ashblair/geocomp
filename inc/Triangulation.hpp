@@ -1,4 +1,5 @@
 #pragma once
+#include "AVL.hpp"
 
 	class TriXY:public CompGeo::XY
 	{
@@ -137,7 +138,7 @@
 		static double XofY(const TriSegType &);
 		bool TriListLoad(NGons &, std::string &);
 		template<typename T> void TriListLoad(std::vector<CompGeo::pFaceType> &, CompGeo::DCEL<T> *&);
-		void doInnerComponents(CompGeo::AVL<TriPointType> &, const pTriSegType &);
+		void doInnerComponents(AVL<TriPointType> &, const pTriSegType &);
 		void deleteFace(pTriFaceType);
 		pTriHalfEdgeType chainHalfs(pTriFaceType, pTriHalfEdgeType &);
 		pTriFaceType buildFace(pTriFaceType);
@@ -155,15 +156,15 @@
 		pTriHalfEdgeType getLeftMostOriginating(const pTriHalfEdgeType &, const std::vector<pTriHalfEdgeType> &);
 		pTriHalfEdgeType getLeftMostEnding(const pTriHalfEdgeType &, const std::vector<pTriHalfEdgeType> &);
 		void MakeFaces(pTriFaceType, pTriFaceType, pTriSegListType &);
-		pTriSegType FindLeft(TriXY, CompGeo::AVL<TriSegType> &);
-		void removeStatusEdge(pTriHalfEdgeType, CompGeo::AVL<TriSegType> &);
+		pTriSegType FindLeft(TriXY, AVL<TriSegType> &);
+		void removeStatusEdge(pTriHalfEdgeType, AVL<TriSegType> &);
 		void setForMonotone(pTriFaceType);  // call this with tLst.Face
 		void makeMonotone(pTriFaceType, pTriHalfEdgeListType);
-		void handleStartVertex(pTriHalfEdgeType, CompGeo::AVL<TriSegType> &);
-		void handleEndVertex(pTriHalfEdgeType, CompGeo::AVL<TriSegType> &, pTriSegListType &);
-		void handleRegularVertex(pTriHalfEdgeType, CompGeo::AVL<TriSegType> &, pTriSegListType &);
-		void handleSplitVertex(pTriHalfEdgeType, CompGeo::AVL<TriSegType> &, pTriSegListType &);
-		void handleMergeVertex(pTriHalfEdgeType, CompGeo::AVL<TriSegType> &, pTriSegListType &);
+		void handleStartVertex(pTriHalfEdgeType, AVL<TriSegType> &);
+		void handleEndVertex(pTriHalfEdgeType, AVL<TriSegType> &, pTriSegListType &);
+		void handleRegularVertex(pTriHalfEdgeType, AVL<TriSegType> &, pTriSegListType &);
+		void handleSplitVertex(pTriHalfEdgeType, AVL<TriSegType> &, pTriSegListType &);
+		void handleMergeVertex(pTriHalfEdgeType, AVL<TriSegType> &, pTriSegListType &);
 		std::vector<pPGonWork> translateFaces(pTriFaceType); // for InnerComponents of holes
 		std::vector<pPGonWork> translateFace(pTriFaceType); // for a fill face
 		std::vector<unsigned int> indexFaces(pTriFaceType); // for InnerComponents of holes

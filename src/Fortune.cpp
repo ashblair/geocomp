@@ -1,5 +1,6 @@
 #include "first.hpp"
 #include "CompGeo.hpp"
+#include "Sorter.hpp"
 #include "NGons.hpp"
 #include "Fortune.hpp"
 
@@ -353,7 +354,7 @@ void Fortune::BinaryBPlus::DeleteSubTree(pNodeType & sTree)
 	}
 }
 
-void Fortune::BinaryBPlus::AddArc(pArcType & a, CompGeo::AVL<EventQPoint> &q) 
+void Fortune::BinaryBPlus::AddArc(pArcType & a, AVL<EventQPoint> &q) 
 { // dispatcher function: 3 kinds of AddArc's available
 	y_d = a->cell->site->y;
 	if (IsStarting)
@@ -694,7 +695,7 @@ void Fortune::BinaryBPlus::FindLeaf(pArcType a)
 	
 }
 
-void Fortune::BinaryBPlus::DeleteArc(pEventQPoint c_e, CompGeo::AVL<EventQPoint> & q, pDiagramType d)
+void Fortune::BinaryBPlus::DeleteArc(pEventQPoint c_e, AVL<EventQPoint> & q, pDiagramType d)
 {	// call with circle point, add vertex (i.e. circle center), set as origins for halfedges
 	// necessitates deleting 1 leaf from the tree and modifying another
 	
@@ -758,7 +759,7 @@ void Fortune::BinaryBPlus::DeleteArc(pEventQPoint c_e, CompGeo::AVL<EventQPoint>
 	aR->prev = aL;
 	if (aL->circleEvent != NULL)
 	{
-		CompGeo::AVLNode<EventQPoint> * aNode = q.Find(aL->circleEvent);
+		AVLNode<EventQPoint> * aNode = q.Find(aL->circleEvent);
 		assert(aNode != NULL);
 		assert(aNode->Data->arc == aL);
 		/*
@@ -777,7 +778,7 @@ void Fortune::BinaryBPlus::DeleteArc(pEventQPoint c_e, CompGeo::AVL<EventQPoint>
 	}
 	if (aR->circleEvent != NULL)
 	{
-		CompGeo::AVLNode<EventQPoint> * aNode = q.Find(aR->circleEvent);
+		AVLNode<EventQPoint> * aNode = q.Find(aR->circleEvent);
 		assert(aNode != NULL);
 		assert(aNode->Data->arc == aR);
 		/*
@@ -1114,7 +1115,7 @@ void Fortune::BinaryBPlus::AddTopLevelArc(pArcType & a)
 
 }
 
-void Fortune::BinaryBPlus::AddNormal(pArcType & a, CompGeo::AVL<EventQPoint> & q)
+void Fortune::BinaryBPlus::AddNormal(pArcType & a, AVL<EventQPoint> & q)
 {	// Q needed to add or delete circle events
 	//HRESULT b_p;
 	//char eMsg[256];
@@ -1131,7 +1132,7 @@ void Fortune::BinaryBPlus::AddNormal(pArcType & a, CompGeo::AVL<EventQPoint> & q
 	// beachline: leftmost<->...<->a1<->a<->a3<->...<->rightmost
 	if (a1->circleEvent != NULL)  // false alarm - delete:
 	{
-		CompGeo::AVLNode<EventQPoint> * aNde = q.Find(a1->circleEvent);
+		AVLNode<EventQPoint> * aNde = q.Find(a1->circleEvent);
 		assert (aNde != NULL);
 		//b_p = StringCbPrintf(eMsg, 256 * sizeof(char),
 		//	L"AddNormal - deleting circleEvent %p \r\n", a1->circleEvent);
@@ -2113,7 +2114,7 @@ void Fortune::Voronoi::CleanUpVertices(void)
 		vLTrail = vL;
 		vL = vL->next;
 	}
-	CompGeo::Sorter<VertexPoint> s(vPts, 0, vCount - 1, vCount);
+	Sorter<VertexPoint> s(vPts, 0, vCount - 1, vCount);
 	s.doSort();
 	/*
 	b_p = StringCbPrintf(desc, 256 * sizeof(char), L"Sorted VertexPoint Array:\r\n");
@@ -2893,7 +2894,7 @@ void Fortune::Voronoi::LinkHalfEdges(void)
 				rPts[i].cell = c1;
 				ihL = ihL->next;
 			}
-			CompGeo::Sorter<RadialPoint> s(rPts, 0, LP.iCount - 1, LP.iCount);
+			Sorter<RadialPoint> s(rPts, 0, LP.iCount - 1, LP.iCount);
 			s.doSort();
 			int iStart = 0;
 			if (rPts[0].he->IncidentCell == c1) ++iStart;
@@ -2965,7 +2966,7 @@ void Fortune::Voronoi::LinkHalfEdges(void)
 			//D.halfedges = c1->InnerComponents;
 			c1->InnerComponents = NULL;
 			//hcount += LP.eCount;
-			CompGeo::Sorter<RadialPoint> s(rPts, 0, LP.eCount - 1, LP.eCount);
+			Sorter<RadialPoint> s(rPts, 0, LP.eCount - 1, LP.eCount);
 			s.doSort();
 			c1->OuterComponent = rPts[0].he;
 			//b_p = StringCbPrintf(desc, 1024 * sizeof(char), L"halfEdges around cell %c @ (%f, %f):\t", 
@@ -3053,7 +3054,7 @@ void Fortune::Voronoi::LinkHalfEdges(void)
 		//hL_extTrail->next = D.halfedges;
 		//D.halfedges = c_ext->InnerComponents;
 		c_ext->InnerComponents = NULL;
-		CompGeo::Sorter<RadialPoint> s(rPts, 0, ext_count - 1, ext_count);
+		Sorter<RadialPoint> s(rPts, 0, ext_count - 1, ext_count);
 		s.doSort();
 		for (i = 0; i < ext_count; ++i)
 		{ // want to go clockwise with exterior cell so next is last and prev is next

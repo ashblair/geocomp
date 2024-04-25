@@ -1,5 +1,7 @@
 #include "first.hpp"
 #include "CompGeo.hpp"
+#include "AVL.hpp"
+#include "Sorter.hpp"
 #include "NGons.hpp"
 #include "drawgon.hpp"
 #include "ConvexHull.hpp"

@@ -1,5 +1,6 @@
 #include "first.hpp"
 #include "CompGeo.hpp"
+#include "Sorter.hpp"
 #include "NGons.hpp"
 #include "SegmentIntersect.hpp"
 #include "Triangulation.hpp"
@@ -552,7 +553,7 @@ template<typename T> void Triangulation::TriListLoad(vector<CompGeo::pFaceType> 
 	pf0->NumEdges = 0;
 	pf0->OuterComponent = NULL;
 	tLst.Faces = pf0;
-	CompGeo::AVL<TriPointType> EventQ;
+	AVL<TriPointType> EventQ;
 	for (unsigned int i = 0; i < tLst.NumFaces; ++i)
 	{
 		//pPGonFile fGon = SegmentIntersect::SegIntVertices[i].polyVertices;
@@ -761,7 +762,7 @@ bool Triangulation::TriListLoad(NGons & ng, string & errMsg)
 	pf0->NumEdges = 0;
 	pf0->OuterComponent = NULL;
 	tLst.Faces = pf0;
-	CompGeo::AVL<TriPointType> EventQ;
+	AVL<TriPointType> EventQ;
 	for (unsigned int i = 0; i < tLst.NumFaces; ++i)
 	{
 		//pPGonFile fGon = SegmentIntersect::SegIntVertices[i].polyVertices;
@@ -1003,7 +1004,7 @@ pTriSegListType Triangulation::getLeftMatch(const pTriSegListType & lrNxt)
 	return lr;
 }
 
-void Triangulation::doInnerComponents(CompGeo::AVL<TriPointType> & EventQ, const pTriSegType & segs)
+void Triangulation::doInnerComponents(AVL<TriPointType> & EventQ, const pTriSegType & segs)
 {
 	//EventQ.checkForDuplicates = true;
 	for (unsigned int i = 0; i < tLst.NumVertices; ++i)
@@ -1016,7 +1017,7 @@ void Triangulation::doInnerComponents(CompGeo::AVL<TriPointType> & EventQ, const
 		TriPointType hiSegPt;
 		hiSegPt.point = segs[i].hi;
 		bool iHorizontal = (fabs(segs[i].hi.y - segs[i].lo.y) < MAX_FLT_PRECISION);
-		CompGeo::AVLNode<TriPointType> * pAVL_N = EventQ.Find(&hiSegPt);
+		AVLNode<TriPointType> * pAVL_N = EventQ.Find(&hiSegPt);
 		pTriPointType pPt = pAVL_N->Data;
 		// there can be 0, 1 or 2 segments with a point
 		unsigned int s_in = 0;
@@ -1645,7 +1646,7 @@ void Triangulation::MakeFaces(pTriFaceType pf0, pTriFaceType pf, pTriSegListType
 	}
 }
 
-pTriSegType Triangulation::FindLeft(TriXY A, CompGeo::AVL<TriSegType> & T)
+pTriSegType Triangulation::FindLeft(TriXY A, AVL<TriSegType> & T)
 {
 	refPt = A;
 	TriSegType dummy;
@@ -1655,19 +1656,19 @@ pTriSegType Triangulation::FindLeft(TriXY A, CompGeo::AVL<TriSegType> & T)
 	dummy.lo.y = -1.0;
 	T.FindLeaf(&dummy);
 	pTriSegType left = NULL;
-	unsigned int i = 0;
-	for (i = T.pathTop; i > 0; --i) if (T.sPath[i].direction == 'r') break;
-	if (i > 0) left = T.sPath[i].pNode->Data;
+	unsigned int i = T.sPath.size();
+	for (; i > 0; --i) if (T.sPath[i - 1].direction == 'r') break;
+	if (i > 0) left = T.sPath[i - 1].node->Data;
 	assert (left != NULL);
 	return left;
 }
 
-void Triangulation::removeStatusEdge(pTriHalfEdgeType e, CompGeo::AVL<TriSegType> & T)
+void Triangulation::removeStatusEdge(pTriHalfEdgeType e, AVL<TriSegType> & T)
 {// remove segment associated with e from T
  // this depends on refPt
 	TriSegType finder(e);
 	refPt = finder.lo;
-	CompGeo::AVLNode<TriSegType> * a_n = T.Find(&finder);
+	AVLNode<TriSegType> * a_n = T.Find(&finder);
 	assert(a_n != NULL);
 	T.Delete();
 
@@ -1717,7 +1718,7 @@ void Triangulation::addTriangles(pTriFaceType pf0, pTriHalfEdgeListType pHEL)
 	unsigned int L = phL->Edge;
 	phL->Origin->TurnType = 'E';
 	phG->Origin->TurnType = 'B';
-	CompGeo::Sorter<TriPointType> srt(p_a, 0, N - 1, N);
+	Sorter<TriPointType> srt(p_a, 0, N - 1, N);
 	srt.doSort();
 	srt.~Sorter();
 	TriStack s;
@@ -1831,7 +1832,7 @@ void Triangulation::makeMonotone(pTriFaceType pf0, pTriHalfEdgeListType pHEL)
 	pTriFaceType pf = ph0->IncidentFace;
 	pTriHalfEdgeListType pHELin = pf->InnerComponents;
 	// initializing the event queue:
-	CompGeo::AVL<TriPointType> EventQ;
+	AVL<TriPointType> EventQ;
 	do
 	{
 		for (unsigned int i = 0; i < pf->NumEdges; ++i)
@@ -1858,7 +1859,7 @@ void Triangulation::makeMonotone(pTriFaceType pf0, pTriHalfEdgeListType pHEL)
 	} while (ph != NULL);
 	bool fIsEmpty = false;
 	TriPointType Pt = EventQ.GetLeast(fIsEmpty);
-	CompGeo::AVL<TriSegType> S_T;  // status tree depends on refPt
+	AVL<TriSegType> S_T;  // status tree depends on refPt
 	pTriSegListType newhalfs = NULL;
 	while (!fIsEmpty)
 	{
@@ -1897,7 +1898,7 @@ void Triangulation::makeMonotone(pTriFaceType pf0, pTriHalfEdgeListType pHEL)
 	}
 }
 
-void Triangulation::handleStartVertex(pTriHalfEdgeType e_i, CompGeo::AVL<TriSegType> & T)
+void Triangulation::handleStartVertex(pTriHalfEdgeType e_i, AVL<TriSegType> & T)
 {
 	pTriVertexType v_i = e_i->Origin;
 	refPt = v_i->Coordinates;
@@ -1905,7 +1906,7 @@ void Triangulation::handleStartVertex(pTriHalfEdgeType e_i, CompGeo::AVL<TriSegT
 	e_i->Helper = v_i;
 }
 
-void Triangulation::handleEndVertex(pTriHalfEdgeType e_i, CompGeo::AVL<TriSegType> & T, 
+void Triangulation::handleEndVertex(pTriHalfEdgeType e_i, AVL<TriSegType> & T, 
 	pTriSegListType & newhalfs)
 {
 	pTriHalfEdgeType e_p = e_i->Prev;
@@ -1915,7 +1916,7 @@ void Triangulation::handleEndVertex(pTriHalfEdgeType e_i, CompGeo::AVL<TriSegTyp
 }
 
 void Triangulation::handleRegularVertex(pTriHalfEdgeType e_i, 
-	CompGeo::AVL<TriSegType> & T, pTriSegListType & newhalfs)
+	AVL<TriSegType> & T, pTriSegListType & newhalfs)
 {
 	pTriHalfEdgeType e_p = e_i->Prev;
 	pTriVertexType v_i = e_i->Origin;
@@ -1943,7 +1944,7 @@ void Triangulation::handleRegularVertex(pTriHalfEdgeType e_i,
 	}
 }
 
-void Triangulation::handleSplitVertex(pTriHalfEdgeType e_i, CompGeo::AVL<TriSegType> & T, 
+void Triangulation::handleSplitVertex(pTriHalfEdgeType e_i, AVL<TriSegType> & T, 
 	pTriSegListType & newhalfs)
 {
 	pTriVertexType v_i = e_i->Origin;
@@ -1956,7 +1957,7 @@ void Triangulation::handleSplitVertex(pTriHalfEdgeType e_i, CompGeo::AVL<TriSegT
 	T.AlwaysInsert(new TriSegType(e_i));
 }
 
-void Triangulation::handleMergeVertex(pTriHalfEdgeType e_i, CompGeo::AVL<TriSegType> & T, 
+void Triangulation::handleMergeVertex(pTriHalfEdgeType e_i, AVL<TriSegType> & T, 
 	pTriSegListType & newhalfs)
 {
 	pTriHalfEdgeType e_p = e_i->Prev;

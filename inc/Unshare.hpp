@@ -1,4 +1,5 @@
 #pragma once
+#include "AVL.hpp"
 
 	class UnsXY:public CompGeo::XY
 	{
@@ -51,7 +52,7 @@
 		std::vector<pPGonWork> ConsolidatePolygons(void);
 		void InitializePointTree(void);
 		
-		CompGeo::AVL<UnsSegType> SegTree, DelTree;
-		CompGeo::AVL<UnsPointType> PointTree;
-		CompGeo::AVLNode<UnsPointType> * pNode;
+		AVL<UnsSegType> SegTree, DelTree;
+		AVL<UnsPointType> PointTree;
+		AVLNode<UnsPointType> * pNode;
 	};
