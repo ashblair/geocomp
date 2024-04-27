@@ -1,1 +1,1 @@
-/home/ash/Projects/share/templ/debugAVL.hpp
+../../share/templ/debugAVL.hpp

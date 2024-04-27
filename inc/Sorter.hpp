@@ -1,1 +1,1 @@
-/home/ash/Projects/share/templ/Sorter.hpp
+../../share/templ/Sorter.hpp

@@ -1,1 +1,1 @@
-/home/ash/Projects/share/templ/avlExceptions.hpp
+../../share/templ/avlExceptions.hpp
