@@ -145,6 +145,7 @@ private:
     //void PathToStr(char *&, int, int *);
     
 };
+template<typename T> using pAVL = class AVL<T> *;
 
 template<typename T>
 AVL<T>::AVL(void):pRoot(NULL) {}
